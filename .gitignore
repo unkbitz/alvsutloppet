@@ -1,13 +1,49 @@
 /build/
 /debug/
 /release/
-*.pro.user
-*.user
-*.obj
+build/
+*build-*
+
+# Executables / binaries
 *.exe
 *.dll
-*.pdb
+*.obj
 *.o
+*.pdb
+*.a
+*.so
+*.so.*
+*.dylib
+
+# Qt
+*.pro.user
+*.pro.user.*
+*.qbs.user
+*.qbs.user.*
+*.moc
+moc_*.cpp
+moc_*.h
+qrc_*.cpp
+ui_*.h
+Makefile*
+*.qm
+*.prl
+/.qmake.cache
+/.qmake.stash
+object_script.*.Release
+object_script.*.Debug
+*_plugin_import.cpp
+
+# Qt Creator
+*.user
 *.autosave
+*.qmlproject.user
+*.qmlproject.user.*
+CMakeLists.txt.user*
+compile_commands.json
+*creator.user*
+*_qmlcache.qrc
+
+# OS
 .DS_Store
 Thumbs.db
