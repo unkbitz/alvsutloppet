@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>start.png</file>
+        <file>alvsutloppet.png</file>
+        <file>Alvsutloppet_Logo.ico</file>
+    </qresource>
+    <qresource prefix="/"/>
+</RCC>

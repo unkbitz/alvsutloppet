@@ -1,0 +1,13 @@
+/build/
+/debug/
+/release/
+*.pro.user
+*.user
+*.obj
+*.exe
+*.dll
+*.pdb
+*.o
+*.autosave
+.DS_Store
+Thumbs.db
