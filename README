@@ -1,0 +1,59 @@
+# Älvsutloppet Timing System
+
+A desktop application for managing race timing, runner registration, result export, prize draws, high score lists, and a public display window for the Älvsutloppet race event.
+
+Built with C++ and Qt Widgets.
+
+## Features
+
+- Runner registration with start number, name, category, track, and birth year
+- Race timer with finish registration
+- Undo support for removed finish times
+- Autosave using JSON to protect data if the program closes unexpectedly
+- CSV export of results
+- Prize draw system for different runner categories
+- High score/top list display
+- Separate public display window intended for a second screen
+
+## Screenshots
+
+Add screenshots here, for example:
+
+![Timing view](screenshots/timing.jpg)
+![Public display](screenshots/display.jpg)
+
+## Technologies
+
+- C++
+- Qt 6 / Qt Widgets
+- CMake
+- JSON autosave
+- CSV import/export
+- Windows deployment with `windeployqt`
+
+## Project Status
+
+This project was built as a practical event tool for a local race.  
+It is currently under active development and focuses on reliability, usability, and fast operation during a live race.
+
+## Build Instructions
+
+Requirements:
+
+- Qt 6
+- CMake
+- A C++ compiler, such as MSVC on Windows
+
+Build using Qt Creator:
+
+1. Open the project in Qt Creator
+2. Select a Qt 6 Desktop kit
+3. Configure the CMake project
+4. Build and run
+
+## Deployment
+
+On Windows, build the project in Release mode and run:
+
+```bash
+windeployqt alvsutloppet.exe
