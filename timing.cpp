@@ -72,6 +72,7 @@ void MainWindow::on_finishButton_clicked()
     addDeleteButtonToRow(ui->resultTable, row, 4);
 
     updateButtonsEnabled();
+    updateExportTable();
     updateDisplay();
     saveAutosave();
     ui->resultTable->scrollToBottom();
@@ -127,7 +128,7 @@ void MainWindow::on_clearButton_clicked()
         displayWindow->setLatestTimeText("");
         displayWindow->setLatestFourTimeText("");
     }
-
+    updateExportTable();
     updateButtonsEnabled();
     saveAutosave();
 }
@@ -289,4 +290,18 @@ void MainWindow::updateDisplay()
     }
 
     displayWindow->setLatestFourTimeText(latestFourLines.join("\n"));
+}
+
+void MainWindow::updateAmountOfFinishedRunners()
+{
+    int count = 0;
+    for (int r = 0; r < ui->resultTable->rowCount(); r++)
+    {
+        if(!isChecked(ui->resultTable, r, 3))
+        {
+            count++;
+        }
+    }
+    QString amount = "Antal målgångar: " + QString::number(count);
+    ui->amountOfFinishedRunners->setText(amount);
 }

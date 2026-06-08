@@ -14,7 +14,7 @@ void MainWindow::on_timeButton_clicked()
 void MainWindow::on_exportButton_clicked()
 {
     ui->stackedWidget->setCurrentIndex(5);
-    updateExportTable();
+    //updateExportTable();
 }
 
 void MainWindow::on_randomButton_clicked()
@@ -23,8 +23,4 @@ void MainWindow::on_randomButton_clicked()
     ui->stackedWidget->setCurrentIndex(3);
 }
 
-void MainWindow::on_newRecordButton_clicked()
-{
-    ui->stackedWidget->setCurrentIndex(4);
-}
 

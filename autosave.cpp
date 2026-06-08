@@ -46,6 +46,7 @@ void MainWindow::saveAutosave()
     QJsonObject root;
 
     root["resultTable"] = tableToJson(ui->resultTable);
+    root["exportTable"] = tableToJson(ui->exportTable);
     root["registerTable"] = tableToJson(ui->registerTable);
     root["timerOn"] = timerOn;
     root["raceStartDateTime"] = raceStartDateTime.toString(Qt::ISODate);
@@ -114,6 +115,7 @@ void MainWindow::loadAutosave()
     QJsonObject root = doc.object();
 
     jsonToTable(ui->resultTable, root["resultTable"].toArray());
+    jsonToTable(ui->exportTable, root["exportTable"].toArray());
     jsonToTable(ui->registerTable, root["registerTable"].toArray());
 
     renumberRows();

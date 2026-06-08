@@ -40,6 +40,7 @@ void MainWindow::on_clearRegisterTableButton_clicked()
         }
     }
     ui->registerTable->setRowCount(0);
+    updateAmountOfRunners();
     saveAutosave();
 }
 
@@ -95,4 +96,18 @@ bool MainWindow::isChecked(QTableWidget* table, int row, int col)
 {
     auto item = table->item(row, col);
     return item && item->checkState() == Qt::Checked;
+}
+
+void MainWindow::updateAmountOfRunners()
+{
+    int count = 0;
+    for (int r = 0; r < ui->registerTable->rowCount(); r++)
+    {
+        if(cellText(ui->registerTable, r, 0) != "")
+        {
+            count++;
+        }
+    }
+    QString amount = "Antal registrerade Löpare: " + QString::number(count);
+    ui->amountOfRegisteredRunners->setText(amount);
 }

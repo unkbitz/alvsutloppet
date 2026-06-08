@@ -41,7 +41,6 @@ private slots:
     void on_timeButton_clicked();
     void on_registerButton_clicked();
     void on_randomButton_clicked();
-    void on_newRecordButton_clicked();
     void on_exportButton_clicked();
 
     // Register
@@ -59,24 +58,15 @@ private slots:
     void on_exportButton_2_clicked();
 
     // Random
-    void on_clearAdults_clicked();
-    void on_clearFemale_clicked();
-    void on_clearMale_clicked();
-    void on_clearGirls_clicked();
-    void on_clearBoys_clicked();
+
     void on_generateButton_clicked();
     void generateWinners(QTableWidget* table, QString winner, int row);
     void addRowInRandomTable(QTableWidget* table);
-    void on_addToAdultsButton_clicked();
-    void on_addToFemaleButton_clicked();
-    void on_addToMaleButton_clicked();
-    void on_addToGirlsButton_clicked();
-    void on_addToBoysButton_clicked();
-    void on_addToChildrenButton_clicked();
-    void on_clearChildren_clicked();
 
     // newRecord
     void on_tryAddButton_clicked();
+
+    void on_addWalkersButton_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -88,7 +78,9 @@ private:
     QDateTime raceStartDateTime;
 
     int runnerCount;
-    int ageLimit = 2010;
+
+    int currentYear = QDate::currentDate().year();
+    int ageLimit = currentYear - 16;
 
     bool timerOn = false;
     bool updatingExportTable = false;
@@ -100,6 +92,7 @@ private:
     void addCheckBoxesToRow(QTableWidget* table, int row, int startColumn, int endColumn);
     QString cellText(QTableWidget* table, int row, int col);
     bool isChecked(QTableWidget* table, int row, int col);
+    void updateAmountOfRunners();
 
     // Timing
     QString formatTime(qint64 ms);
@@ -107,9 +100,12 @@ private:
     void renumberRows();
     void removeRowWithUndo(QTableWidget* table, int row);
     void updateDisplay();
+    void updateAmountOfFinishedRunners();
 
     // Export
+    void exportDatabaseCsv();
     void updateExportTable();
+    void AddWalkersToExportTable();
     void onExportTableItemChanged(QTableWidgetItem* item);
 
     // Random

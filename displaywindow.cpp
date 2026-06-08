@@ -255,6 +255,11 @@ void DisplayWindow::loadHighScoresFromCsv()
 
     QTextStream in(&file);
 
+    if(!in.atEnd())
+    {
+        in.readLine();
+    }
+
     int row = 0;
 
     while(!in.atEnd() && row < 5)

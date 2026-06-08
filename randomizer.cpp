@@ -3,42 +3,6 @@
 
 #include <random>
 
-void MainWindow::on_clearAdults_clicked()
-{
-    ui->adultsWinnersTable->setRowCount(0);
-    addRowInRandomTable(ui->adultsWinnersTable);
-}
-
-void MainWindow::on_clearFemale_clicked()
-{
-    ui->femaleWinnersTable->setRowCount(0);
-    addRowInRandomTable(ui->femaleWinnersTable);
-}
-
-void MainWindow::on_clearMale_clicked()
-{
-    ui->maleWinnersTable->setRowCount(0);
-    addRowInRandomTable(ui->maleWinnersTable);
-}
-
-void MainWindow::on_clearGirls_clicked()
-{
-    ui->girlsWinnersTable->setRowCount(0);
-    addRowInRandomTable(ui->girlsWinnersTable);
-}
-
-void MainWindow::on_clearBoys_clicked()
-{
-    ui->boysWinnersTable->setRowCount(0);
-    addRowInRandomTable(ui->boysWinnersTable);
-}
-
-void MainWindow::on_clearChildren_clicked()
-{
-
-    ui->childrenWinnersTable->setRowCount(0);
-    addRowInRandomTable(ui->childrenWinnersTable);
-}
 
 void MainWindow::on_generateButton_clicked()
 {
@@ -46,43 +10,21 @@ void MainWindow::on_generateButton_clicked()
 
     QStringList candidates = buildList(targetGroup);
 
-    int amountOfVinners = 1;
+    int amountOfVinners = ui->amountComboBox->currentText().toInt();
+
     QTableWidget* table = ui->adultsWinnersTable;
 
     if (targetGroup == "Vuxna")
     {
-        amountOfVinners = ui->adultsWinnersTable->rowCount();
-    }
-
-    else if (targetGroup == "Kvinnor")
-    {
-        amountOfVinners = ui->femaleWinnersTable->rowCount();
-        table = ui->femaleWinnersTable;
-    }
-
-    else if (targetGroup == "Män")
-    {
-        amountOfVinners = ui->maleWinnersTable->rowCount();
-        table = ui->maleWinnersTable;
+        //amountOfVinners = ui->adultsWinnersTable->rowCount();
+        table->setVisible(true);
     }
 
     else if (targetGroup == "Barn")
     {
-        amountOfVinners = ui->childrenWinnersTable->rowCount();
+        //amountOfVinners = ui->childrenWinnersTable->rowCount();
         table = ui->childrenWinnersTable;
-    }
-
-
-    else if (targetGroup == "Flickor")
-    {
-        amountOfVinners = ui->girlsWinnersTable->rowCount();
-        table = ui->girlsWinnersTable;
-    }
-
-    else if (targetGroup == "Pojkar")
-    {
-        amountOfVinners = ui->boysWinnersTable->rowCount();
-        table = ui->boysWinnersTable;
+        table->setVisible(true);
     }
 
     for (int a = 0; a < amountOfVinners; a++)
@@ -94,19 +36,16 @@ void MainWindow::on_generateButton_clicked()
         int max = candidates.count() -1;
         int random = getRandom(0, max);
         QString winner = candidates.takeAt(random);
-        generateWinners(table, winner, a);
-        //if (targetGroup == "Alla")
-        //{
-        //    int row = ui->allWinnersTable->rowCount();
-        //    ui->allWinnersTable->insertRow(row);
-        //    ui->allWinnersTable->setItem(row, 0, new QTableWidgetItem(winner));
-        //}
+        int row = table->rowCount();
+        table->insertRow(row);
+        generateWinners(table, winner, row);
     }
 }
 
 void MainWindow::generateWinners(QTableWidget* table, QString winner, int row)
 {
     table->setItem(row, 0, new QTableWidgetItem(winner));
+    table->setItem(row, 1, new QTableWidgetItem(""));
 }
 
 QStringList MainWindow::buildList(QString targetGroup)
@@ -136,17 +75,10 @@ QStringList MainWindow::buildList(QString targetGroup)
             junior = year >= ageLimit;
         }
 
-        bool female = isChecked(ui->registerTable, i, 2);
-        bool male = isChecked(ui->registerTable, i, 3);
-
         QString runner = startNumber + " " + name;
 
         if ((targetGroup == "Vuxna" && senior) ||
-            (targetGroup == "Kvinnor" && female && senior) ||
-            (targetGroup == "Män" && male && senior) ||
-            (targetGroup == "Barn" && junior) ||
-            (targetGroup == "Flickor" && female && junior) ||
-            (targetGroup == "Pojkar" && male && junior))
+            (targetGroup == "Barn" && junior))
         {
             candidates.append(runner);
         }
@@ -175,34 +107,4 @@ void MainWindow::addRowInRandomTable(QTableWidget* table)
     table->setCurrentCell(row, 1);
     table->editItem(table->item(row, 1));
     saveAutosave();
-}
-
-void MainWindow::on_addToAdultsButton_clicked()
-{
-    addRowInRandomTable(ui->adultsWinnersTable);
-}
-
-void MainWindow::on_addToFemaleButton_clicked()
-{
-    addRowInRandomTable(ui->femaleWinnersTable);
-}
-
-void MainWindow::on_addToMaleButton_clicked()
-{
-    addRowInRandomTable(ui->maleWinnersTable);
-}
-
-void MainWindow::on_addToGirlsButton_clicked()
-{
-    addRowInRandomTable(ui->girlsWinnersTable);
-}
-
-void MainWindow::on_addToBoysButton_clicked()
-{
-    addRowInRandomTable(ui->boysWinnersTable);
-}
-
-void MainWindow::on_addToChildrenButton_clicked()
-{
-    addRowInRandomTable(ui->childrenWinnersTable);
 }

@@ -68,6 +68,7 @@ MainWindow::MainWindow(QWidget *parent)
     this->showMaximized();
 
     loadAutosave();
+    //updateAmountOfFinishedRunners();
     saveAutosave();
 }
 
@@ -140,11 +141,7 @@ void MainWindow::setUpTables()
 void MainWindow::setUpComboBoxes()
 {
     ui->targetGroupComboBox->addItem("Vuxna", 1);
-    ui->targetGroupComboBox->addItem("Män", 2);
-    ui->targetGroupComboBox->addItem("Kvinnor", 3);
-    ui->targetGroupComboBox->addItem("Barn", 4);
-    ui->targetGroupComboBox->addItem("Pojkar", 5);
-    ui->targetGroupComboBox->addItem("Flickor", 6);
+    ui->targetGroupComboBox->addItem("Barn", 2);
     ui->targetGroupComboBox->setCurrentIndex(0);
 }
 
@@ -224,6 +221,7 @@ void MainWindow::connectInput()
             this,
             [this](QTableWidgetItem* item)
             {
+                updateAmountOfFinishedRunners();
                 if(item && item->column() == 2)
                 {
                     saveAutosave();
@@ -240,6 +238,7 @@ void MainWindow::connectInput()
             this,
             [this](QTableWidgetItem* item)
             {
+                updateAmountOfRunners();
                 if(item && item->column() == 6)
                 {
                     saveAutosave();
@@ -248,6 +247,16 @@ void MainWindow::connectInput()
                 {
                     saveAutosave();
                 }
+            });
+
+    connect(ui->exportTable, &QTableWidget::itemChanged,
+            this,
+            [this](QTableWidgetItem* item)
+            {
+                onExportTableItemChanged(item);
+
+                if(!updatingExportTable)
+                    saveAutosave();
             });
 }
 
@@ -261,7 +270,6 @@ void MainWindow::setUpTopLayout()
     topLayout->addWidget(ui->registerButton);
     topLayout->addWidget(ui->timeButton);
     topLayout->addWidget(ui->randomButton);
-    topLayout->addWidget(ui->newRecordButton);
     topLayout->addWidget(ui->exportButton);
     topLayout->addStretch();
 
@@ -280,6 +288,8 @@ void MainWindow::setUpTimingLayout()
     leftLayoutTime->addWidget(ui->startButton);
     leftLayoutTime->addWidget(ui->finishButton);
     leftLayoutTime->addWidget(ui->undoButton);
+    leftLayoutTime->addWidget(ui->amountOfFinishedRunners);
+    ui->amountOfFinishedRunners->setAlignment(Qt::AlignCenter);
     leftLayoutTime->addStretch();
     leftLayoutTime->addWidget(ui->stopButton);
     leftLayoutTime->addWidget(ui->clearButton);
@@ -314,6 +324,8 @@ void MainWindow::setUpRegisterLayout()
     auto leftLayoutRegister = new QVBoxLayout();
     leftLayoutRegister->addWidget(ui->addRunnerButton);
     leftLayoutRegister->addWidget(ui->clearRegisterTableButton);
+    leftLayoutRegister->addWidget(ui->amountOfRegisteredRunners);
+    ui->amountOfRegisteredRunners->setAlignment(Qt::AlignCenter);
     leftLayoutRegister->addStretch();
 
     ui->addRunnerButton->setMinimumWidth(300);
@@ -338,6 +350,7 @@ void MainWindow::setUpExportLayout()
 
     auto leftLayoutExport = new QVBoxLayout();
     leftLayoutExport->addWidget(ui->exportButton_2);
+    leftLayoutExport->addWidget(ui->addWalkersButton);
     leftLayoutExport->addStretch();
 
     ui->exportButton_2->setMinimumWidth(300);
@@ -365,6 +378,8 @@ void MainWindow::setUpRandomLayout()
     auto leftLayoutTargetGroup = new QVBoxLayout();
     leftLayoutTargetGroup->addWidget(ui->targetGroupLabel);
     leftLayoutTargetGroup->addWidget(ui->targetGroupComboBox);
+    leftLayoutTargetGroup->addWidget(ui->amountVinnersLabel);
+    leftLayoutTargetGroup->addWidget(ui->amountComboBox);
 
     auto leftLayoutComboBoxes = new QHBoxLayout();
     leftLayoutComboBoxes->addLayout(leftLayoutTargetGroup);
@@ -392,8 +407,6 @@ void MainWindow::setUpRandomLayout()
     auto allHeader = new QHBoxLayout();
 
     allHeader->addWidget(ui->vinnersAdultsLabel);
-    allHeader->addWidget(ui->addToAdultsButton);
-    allHeader->addWidget(ui->clearAdults);
 
     allLayout->addLayout(allHeader);
     allLayout->addWidget(ui->adultsWinnersTable);
@@ -402,87 +415,26 @@ void MainWindow::setUpRandomLayout()
 
     ui->adultsWinnersTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
-    // Female
-    auto femaleLayout = new QVBoxLayout();
-    auto femaleHeader = new QHBoxLayout();
 
-    femaleHeader->addWidget(ui->vinnersFemaleLabel);
-    femaleHeader->addWidget(ui->addToFemaleButton);
-    femaleHeader->addWidget(ui->clearFemale);
-
-    femaleLayout->addLayout(femaleHeader);
-    femaleLayout->addWidget(ui->femaleWinnersTable);
-
-    topRow->addLayout(femaleLayout);
-
-    ui->femaleWinnersTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-
-    //Male
-    auto maleLayout = new QVBoxLayout();
-    auto maleHeader = new QHBoxLayout();
-
-    maleHeader->addWidget(ui->vinnersMaleLabel);
-    maleHeader->addWidget(ui->addToMaleButton);
-    maleHeader->addWidget(ui->clearMale);
-
-    maleLayout->addLayout(maleHeader);
-    maleLayout->addWidget(ui->maleWinnersTable);
-
-    topRow->addLayout(maleLayout);
-
-    ui->maleWinnersTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-
-    // BOTTOM ROW
-    auto bottomRow = new QHBoxLayout();
 
     // Children
     auto childrenLayout = new QVBoxLayout();
     auto childrenHeader = new QHBoxLayout();
 
     childrenHeader->addWidget(ui->vinnersChildrenLabel);
-    childrenHeader->addWidget(ui->addToChildrenButton);
-    childrenHeader->addWidget(ui->clearChildren);
 
     childrenLayout->addLayout(childrenHeader);
     childrenLayout->addWidget(ui->childrenWinnersTable);
 
-    bottomRow->addLayout(childrenLayout, 1);
+
+    topRow->addLayout(childrenLayout);
 
     ui->childrenWinnersTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
-    // Girls
-    auto girlsLayout = new QVBoxLayout();
-    auto girlsHeader = new QHBoxLayout();
 
-    girlsHeader->addWidget(ui->vinnerGirlsLabel);
-    girlsHeader->addWidget(ui->addToGirlsButton);
-    girlsHeader->addWidget(ui->clearGirls);
-
-    girlsLayout->addLayout(girlsHeader);
-    girlsLayout->addWidget(ui->girlsWinnersTable);
-
-    bottomRow->addLayout(girlsLayout, 1);
-
-    ui->girlsWinnersTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-
-    // Boys
-    auto boysLayout = new QVBoxLayout();
-    auto boysHeader = new QHBoxLayout();
-
-    boysHeader->addWidget(ui->vinnerBoysLabel);
-    boysHeader->addWidget(ui->addToBoysButton);
-    boysHeader->addWidget(ui->clearBoys);
-
-    boysLayout->addLayout(boysHeader);
-    boysLayout->addWidget(ui->boysWinnersTable);
-
-    bottomRow->addLayout(boysLayout, 1);
-
-    ui->boysWinnersTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
     rightLayoutRandom->addLayout(topRow, 1);
     rightLayoutRandom->addSpacing(40);
-    rightLayoutRandom->addLayout(bottomRow, 1);
     rightLayoutRandom->addStretch();
 
     randomLayout->addLayout(leftLayoutRandom, 0);
@@ -534,5 +486,4 @@ void MainWindow::setUpNewRecordLayout()
 
     mainNewRecordLayout->addStretch();
 }
-
 
