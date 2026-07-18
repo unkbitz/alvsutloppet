@@ -23,7 +23,7 @@ QJsonArray MainWindow::tableToJson(QTableWidget* table)
 
             cell["text"] = item ? item->text() : "";
             bool checkboxColumn =
-                (table == ui->registerTable && c >= 2 && c <= 5) ||
+                (table == ui->registerTable && ((c >= 2 && c <= 3) || (c >= 5 && c <= 6)))||
                 (table == ui->exportTable && c >= 4 && c <= 7) ||
                 (table == ui->resultTable && c == 3);
 
@@ -87,6 +87,26 @@ void MainWindow::jsonToTable(QTableWidget* table, const QJsonArray& rows)
                 item->setCheckState(
                     cell["checked"].toBool() ? Qt::Checked : Qt::Unchecked
                     );
+            }
+
+            if(table == ui->registerTable)
+            {
+                if (c == 2) // Kvinna
+                {
+                    item->setBackground(QColor(115, 75, 85)); // Rosa
+                }
+                else if (c == 3) // Man
+                {
+                    item->setBackground(QColor(70, 95, 115)); // Blå
+                }
+                else if (c == 5) // 2.1km
+                {
+                    item->setBackground(QColor(70, 105, 80)); // Grön
+                }
+                else if (c == 6) // 5km
+                {
+                    item->setBackground(QColor(65, 85, 110)); // Blå
+                }
             }
 
             table->setItem(row, c, item);

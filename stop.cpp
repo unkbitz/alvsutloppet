@@ -62,6 +62,7 @@ void MainWindow::on_clearButton_clicked()
         displayWindow->setLatestTimeText("");
         displayWindow->setLatestFourTimeText("");
     }
+    enableAddWalkersToggle();
     updateExportTable();
     updateButtonsEnabled();
     updateAmountOfFinishedRunners();

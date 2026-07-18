@@ -70,7 +70,7 @@ void MainWindow::on_finishButton_clicked()
     runnerItem->setFlags(runnerItem->flags() | Qt::ItemIsEditable);
     ui->resultTable->setItem(row, 2, runnerItem);
 
-    addCheckBoxesToRow(ui->resultTable, row, 3, 3);
+    addCheckBoxesToRow(ui->resultTable, row, 3, 3, false);
     addDeleteButtonToRow(ui->resultTable, row, 4);
 
     updateButtonsEnabled();
@@ -95,7 +95,7 @@ void MainWindow::on_undoButton_clicked()
     ui->resultTable->setItem(last.row, 0, new QTableWidgetItem(last.place));
     ui->resultTable->setItem(last.row, 1, new QTableWidgetItem(last.time));
     ui->resultTable->setItem(last.row, 2, new QTableWidgetItem(last.name));
-    addCheckBoxesToRow(ui->resultTable, last.row, 3, 3);
+    addCheckBoxesToRow(ui->resultTable, last.row, 3, 3, false);
 
     if(auto item = ui->resultTable->item(last.row, 3))
     {

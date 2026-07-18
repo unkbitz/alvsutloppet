@@ -68,6 +68,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     this->showMaximized();
 
+    enableAddWalkersToggle();
+
     loadAutosave();
     //updateAmountOfFinishedRunners();
     saveAutosave();
@@ -166,6 +168,38 @@ void MainWindow::connectInput()
         }
     });
 
+    connect(ui->registerTable, &QTableWidget::itemChanged,
+            this, [this](QTableWidgetItem* item)
+            {
+                if (!item || item->checkState() != Qt::Checked)
+                    return;
+
+                const int womanColumn = 2;
+                const int manColumn   = 3;
+                const int twoKmColumn = 5;
+                const int fiveKmColumn = 6;
+
+                int otherColumn = -1;
+
+                if (item->column() == womanColumn)
+                    otherColumn = manColumn;
+                else if (item->column() == manColumn)
+                    otherColumn = womanColumn;
+                else if(item->column() == twoKmColumn)
+                    otherColumn = fiveKmColumn;
+                else if(item->column() == fiveKmColumn)
+                    otherColumn = twoKmColumn;
+
+                if (otherColumn == -1)
+                    return;
+
+                QTableWidgetItem* otherItem =
+                    ui->registerTable->item(item->row(), otherColumn);
+
+                if (otherItem && otherItem->checkState() == Qt::Checked)
+                    otherItem->setCheckState(Qt::Unchecked);
+            });
+
     QShortcut* spaceShortcut = new QShortcut(QKeySequence(Qt::Key_Space), this);
     spaceShortcut->setContext(Qt::ApplicationShortcut);
     connect(spaceShortcut, &QShortcut::activated, this, [this]() {
@@ -179,13 +213,20 @@ void MainWindow::connectInput()
         {
             auto item = ui->registerTable->currentItem();
 
-            if(item && (item->flags() & Qt::ItemIsUserCheckable))
+            if(item)
             {
-                item->setCheckState(
-                    item->checkState() == Qt::Checked ? Qt::Unchecked : Qt::Checked
-                    );
-            }
+                int column = item->column();
 
+                if(column == 2 || column == 3 ||
+                    column == 5 || column == 6)
+                {
+                    item->setCheckState(
+                        item->checkState() == Qt::Checked
+                            ? Qt::Unchecked
+                            : Qt::Checked
+                        );
+                }
+            }
             return;
         }
     });
@@ -343,6 +384,13 @@ void MainWindow::setUpRegisterLayout()
     rightLayoutRegister->addWidget(ui->registerTable, 1);
     registerLayout->addLayout(leftLayoutRegister, 0);
     registerLayout->addLayout(rightLayoutRegister, 1);
+
+    ui->registerTable->setStyleSheet(R"(
+    QTableWidget::item:selected {
+        background-color: rgb(180, 180, 180);
+        color: black;
+    }
+    )");
 }
 
 void MainWindow::setUpExportLayout()

@@ -86,6 +86,7 @@ private:
     int currentYear = QDate::currentDate().year();
     int ageLimit = currentYear - 16;
 
+    bool allFinishesAreAssigned = false;
     bool timerOn = false;
     bool clearPressed = true;
     bool updatingExportTable = false;
@@ -94,7 +95,7 @@ private:
 
     // Registration
     void addDeleteButtonToRow(QTableWidget* table, int row, int column);
-    void addCheckBoxesToRow(QTableWidget* table, int row, int startColumn, int endColumn);
+    void addCheckBoxesToRow(QTableWidget* table, int row, int startColumn, int endColumn, bool checked);
     QString cellText(QTableWidget* table, int row, int col);
     bool isChecked(QTableWidget* table, int row, int col);
     void updateAmountOfRunners();
@@ -112,6 +113,7 @@ private:
     void updateExportTable();
     void AddWalkersToExportTable();
     void onExportTableItemChanged(QTableWidgetItem* item);
+    void enableAddWalkersToggle();
 
     // Random
     QStringList buildList(QString targetGroup);

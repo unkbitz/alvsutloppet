@@ -185,7 +185,7 @@ void MainWindow::updateExportTable()
         ui->exportTable->setItem(row, 2, new QTableWidgetItem(cellText(ui->resultTable, r, 1)));
         ui->exportTable->setItem(row, 3, new QTableWidgetItem(cellText(ui->resultTable, r, 2)));
 
-        addCheckBoxesToRow(ui->exportTable, row, 4, 7);
+        addCheckBoxesToRow(ui->exportTable, row, 4, 7, false);
 
         ui->exportTable->setItem(row, 8, new QTableWidgetItem(""));
         ui->exportTable->setItem(row, 9, new QTableWidgetItem(""));
@@ -238,35 +238,51 @@ void MainWindow::onExportTableItemChanged(QTableWidgetItem* item)
         {
             updatingExportTable = true;
 
-            ui->exportTable->item(exportRow, 3)->setText(cellText(ui->registerTable, r, 1));
-            for(int c = 4; c < 8; c++)
-            {
-                auto exportItem = ui->exportTable->item(exportRow, c);
+            // Namn
+            ui->exportTable->item(exportRow, 3)->setText(
+                cellText(ui->registerTable, r, 1)
+                );
 
-                if(exportItem)
-                {
-                    if (isChecked(ui->registerTable, r, c-2))
-                    {
-                        exportItem->setCheckState(Qt::Checked);
-                    }
-                    else
-                    {
-                        exportItem->setCheckState(Qt::Unchecked);
-                    }
-                }
-            }
+            // Kvinna
+            ui->exportTable->item(exportRow, 4)->setCheckState(
+                isChecked(ui->registerTable, r, 2)
+                    ? Qt::Checked
+                    : Qt::Unchecked
+                );
 
-            ui->exportTable->item(exportRow, 8)->setText(cellText(ui->registerTable, r, 6));
+            // Man
+            ui->exportTable->item(exportRow, 5)->setCheckState(
+                isChecked(ui->registerTable, r, 3)
+                    ? Qt::Checked
+                    : Qt::Unchecked
+                );
+
+            // 2.1km
+            ui->exportTable->item(exportRow, 6)->setCheckState(
+                isChecked(ui->registerTable, r, 5)
+                    ? Qt::Checked
+                    : Qt::Unchecked
+                );
+
+            // Orange bana alltid o-checkad
+            ui->exportTable->item(exportRow, 7)->setCheckState(Qt::Unchecked);
+
+            // föselseår
+            ui->exportTable->item(exportRow, 8)->setText(
+                cellText(ui->registerTable, r, 4)
+                );
+
             QString today = QDate::currentDate().toString("yyyy-MM-dd");
             ui->exportTable->item(exportRow, 9)->setText(today);
 
             updatingExportTable = false;
-
+            enableAddWalkersToggle();
             saveAutosave();
             return;
         }
     }
 }
+
 void MainWindow::on_addWalkersButton_clicked()
 {
     AddWalkersToExportTable();
@@ -302,7 +318,7 @@ void MainWindow::AddWalkersToExportTable()
             ui->exportTable->setItem(row, 2, new QTableWidgetItem(""));
             ui->exportTable->setItem(row, 3, new QTableWidgetItem(""));
 
-            addCheckBoxesToRow(ui->exportTable, row, 4, 7);
+            addCheckBoxesToRow(ui->exportTable, row, 4, 7, false);
 
             ui->exportTable->setItem(row, 8, new QTableWidgetItem(""));
             ui->exportTable->setItem(row, 9, new QTableWidgetItem(""));
@@ -310,5 +326,31 @@ void MainWindow::AddWalkersToExportTable()
             ui->exportTable->item(row, 1)->setText(startNumber);
         }
 
+    }
+}
+
+void MainWindow::enableAddWalkersToggle()
+{
+    allFinishesAreAssigned = true;
+
+    if(ui->exportTable->rowCount() == 0)
+    {
+        allFinishesAreAssigned = false;
+    }
+
+    for (int exportRow = 0; exportRow < ui->exportTable->rowCount(); exportRow++)
+    {
+        if(cellText(ui->exportTable, exportRow, 1) == "")
+        {
+            allFinishesAreAssigned = false;
+        }
+    }
+    if(allFinishesAreAssigned)
+    {
+        ui->addWalkersButton->setEnabled(true);
+    }
+    else
+    {
+        ui->addWalkersButton->setEnabled(false);
     }
 }

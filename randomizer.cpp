@@ -56,7 +56,7 @@ QStringList MainWindow::buildList(QString targetGroup)
     {
         QString startNumber = cellText(ui->registerTable, i, 0);
         QString name = cellText(ui->registerTable, i, 1);
-        QString yearText = cellText(ui->registerTable, i, 6);
+        QString yearText = cellText(ui->registerTable, i, 4);
 
         if(startNumber.isEmpty())
         {

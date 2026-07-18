@@ -47,7 +47,7 @@
      </sizepolicy>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>6</number>
     </property>
     <widget class="QWidget" name="starting">
      <widget class="QLabel" name="startImageLabel">
@@ -124,27 +124,27 @@
       </column>
       <column>
        <property name="text">
-        <string>Grön Bana</string>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>15</pointsize>
-        </font>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Orange Bana</string>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>15</pointsize>
-        </font>
-       </property>
-      </column>
-      <column>
-       <property name="text">
         <string>Födelseår</string>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>15</pointsize>
+        </font>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>2.1 km</string>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>15</pointsize>
+        </font>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>5 km</string>
        </property>
        <property name="font">
         <font>
@@ -949,7 +949,7 @@
       </column>
       <column>
        <property name="text">
-        <string>Grön Bana</string>
+        <string>2.1 km</string>
        </property>
        <property name="font">
         <font>

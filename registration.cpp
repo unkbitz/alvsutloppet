@@ -14,9 +14,15 @@ void MainWindow::on_addRunnerButton_clicked()
 
     ui->registerTable->setItem(row, 0, new QTableWidgetItem(""));
     ui->registerTable->setItem(row, 1, new QTableWidgetItem(""));
-    ui->registerTable->setItem(row, 6, new QTableWidgetItem(""));
+    ui->registerTable->setItem(row, 4, new QTableWidgetItem(""));
 
-    addCheckBoxesToRow(ui->registerTable, row, 2, 5);
+    auto* item = new QTableWidgetItem("");
+    item->setBackground(QColor(60, 60, 60));
+    ui->registerTable->setItem(row, 2, item);
+
+    addCheckBoxesToRow(ui->registerTable, row, 2, 3, false);
+    addCheckBoxesToRow(ui->registerTable, row, 5, 5, false);
+    addCheckBoxesToRow(ui->registerTable, row, 6, 6, true);
     addDeleteButtonToRow(ui->registerTable, row, 7);
 
     ui->registerTable->setCurrentCell(row, 0);
@@ -71,7 +77,7 @@ void MainWindow::addDeleteButtonToRow(QTableWidget* table, int row, int column)
     saveAutosave();
 }
 
-void MainWindow::addCheckBoxesToRow(QTableWidget* table, int row, int startColumn, int endColumn)
+void MainWindow::addCheckBoxesToRow(QTableWidget* table, int row, int startColumn, int endColumn, bool checked)
 {
     for(int col = startColumn; col <= endColumn; col++)
     {
@@ -81,7 +87,34 @@ void MainWindow::addCheckBoxesToRow(QTableWidget* table, int row, int startColum
             Qt::ItemIsEnabled |
             Qt::ItemIsSelectable
             );
-        checkbox->setCheckState(Qt::Unchecked);
+        if(checked)
+        {
+            checkbox->setCheckState(Qt::Checked);
+        }
+        else
+        {
+            checkbox->setCheckState(Qt::Unchecked);
+        }
+
+        if(table == ui->registerTable)
+        {
+            if (col == 2) // Kvinna
+            {
+                checkbox->setBackground(QColor(115, 75, 85)); // Dämpad rosa
+            }
+            else if (col == 3) // Man
+            {
+                checkbox->setBackground(QColor(70, 95, 115)); // Dämpad blå
+            }
+            else if (col == 5) // 2.1 km
+            {
+                checkbox->setBackground(QColor(70, 105, 80)); // Dämpad grön
+            }
+            else if (col == 6) // 5 km
+            {
+                checkbox->setBackground(QColor(65, 85, 110)); // Mörk dämpad blå
+            }
+        }
         table->setItem(row, col, checkbox);
     }
 }
