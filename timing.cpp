@@ -19,6 +19,7 @@ void MainWindow::on_startButton_clicked()
             return;
         }
     }
+    clearPressed = false;
     runnerCount = 0;
     ui->resultTable->setRowCount(0);
     raceStartDateTime = QDateTime::currentDateTime();
@@ -27,6 +28,7 @@ void MainWindow::on_startButton_clicked()
     timerOn = true;
 
     updateButtonsEnabled();
+    updateAmountOfFinishedRunners();
     saveAutosave();
 }
 
@@ -78,61 +80,6 @@ void MainWindow::on_finishButton_clicked()
     ui->resultTable->scrollToBottom();
 }
 
-void MainWindow::on_stopButton_clicked()
-{
-    QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this,
-                                  "Stoppa tidtagning",
-                                  "Är du säker på att du vill stoppa tidtagningen?",
-                                  QMessageBox::Yes | QMessageBox::No);
-
-    if(reply == QMessageBox::No)
-    {
-        return;
-    }
-    timer->stop();
-    timerOn = false;
-
-    updateButtonsEnabled();
-
-    saveAutosave();
-}
-
-void MainWindow::on_clearButton_clicked()
-{
-    if(ui->resultTable->rowCount() > 0)
-    {
-        QMessageBox::StandardButton reply;
-        reply = QMessageBox::question(this,
-                                      "Töm listan",
-                                      "Listan innehåller resultat.\nÄr du säker på att du vill tömma den?",
-                                      QMessageBox::Yes | QMessageBox::No);
-
-        if(reply == QMessageBox::No)
-        {
-            return;
-        }
-    }
-    ui->resultTable->setRowCount(0);
-    timer->stop();
-    timerOn = false;
-    runnerCount = 0;
-    raceStartDateTime = QDateTime();
-    raceTimer.invalidate();
-
-    ui->currentTimeLabel->setText("00:00.0");
-
-    if(displayWindow)
-    {
-        displayWindow->setCurrentTimeText("00:00.0");
-        displayWindow->setLatestTimeText("");
-        displayWindow->setLatestFourTimeText("");
-    }
-    updateExportTable();
-    updateButtonsEnabled();
-    saveAutosave();
-}
-
 void MainWindow::on_undoButton_clicked()
 {
     if(undoStack.isEmpty())
@@ -158,6 +105,7 @@ void MainWindow::on_undoButton_clicked()
     addDeleteButtonToRow(ui->resultTable, last.row, 4);
     renumberRows();
     updateButtonsEnabled();
+    updateAmountOfFinishedRunners();
     updateDisplay();
     saveAutosave();
 }
@@ -176,19 +124,39 @@ QString MainWindow::formatTime(qint64 ms)
 
 void MainWindow::updateButtonsEnabled()
 {
-    if(timerOn == true)
+    if(timerOn == false && clearPressed == true)
     {
-        ui->finishButton->setEnabled(true);
-        ui->stopButton->setEnabled(true);
-        ui->startButton->setEnabled(false);
+        ui->stopButton->setEnabled(false);
+        ui->undoStopButton->setEnabled(false);
         ui->clearButton->setEnabled(false);
+        ui->finishButton->setEnabled(false);
+        ui->startButton->setEnabled(true);
+    }
+
+    else if(timerOn == false && clearPressed == false)
+    {
+        ui->stopButton->setEnabled(false);
+        ui->undoStopButton->setEnabled(true);
+        ui->clearButton->setEnabled(true);
+        ui->finishButton->setEnabled(false);
+        ui->startButton->setEnabled(false);
+    }
+
+    else if(timerOn == true)
+    {
+        ui->stopButton->setEnabled(true);
+        ui->undoStopButton->setEnabled(false);
+        ui->clearButton->setEnabled(false);
+        ui->finishButton->setEnabled(true);
+        ui->startButton->setEnabled(false);
     }
     else
     {
-        ui->finishButton->setEnabled(false);
-        ui->stopButton->setEnabled(false);
-        ui->startButton->setEnabled(true);
+        ui->stopButton->setEnabled(true);
+        ui->undoStopButton->setEnabled(true);
         ui->clearButton->setEnabled(true);
+        ui->finishButton->setEnabled(true);
+        ui->startButton->setEnabled(true);
     }
 
     if(undoStack.isEmpty())
@@ -304,4 +272,5 @@ void MainWindow::updateAmountOfFinishedRunners()
     }
     QString amount = "Antal målgångar: " + QString::number(count);
     ui->amountOfFinishedRunners->setText(amount);
+    ui->amountOfFinishedRunners_2->setText(amount);
 }

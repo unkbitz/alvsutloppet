@@ -47,7 +47,7 @@
      </sizepolicy>
     </property>
     <property name="currentIndex">
-     <number>3</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="starting">
      <widget class="QLabel" name="startImageLabel">
@@ -208,6 +208,76 @@
       </property>
      </widget>
     </widget>
+    <widget class="QWidget" name="stopPage">
+     <widget class="QPushButton" name="clearButton">
+      <property name="geometry">
+       <rect>
+        <x>440</x>
+        <y>240</y>
+        <width>80</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>15</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Nollställ</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="stopButton">
+      <property name="geometry">
+       <rect>
+        <x>440</x>
+        <y>210</y>
+        <width>80</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>15</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Avsluta lopp</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="currentTimeLabel_2">
+      <property name="geometry">
+       <rect>
+        <x>780</x>
+        <y>360</y>
+        <width>144</width>
+        <height>43</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>50</pointsize>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>00:00.000</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="undoStopButton">
+      <property name="geometry">
+       <rect>
+        <x>430</x>
+        <y>280</y>
+        <width>80</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Återuppta lopp</string>
+      </property>
+     </widget>
+    </widget>
     <widget class="QWidget" name="OnGoingRace">
      <widget class="QTableWidget" name="resultTable">
       <property name="geometry">
@@ -316,24 +386,6 @@
        <string>Starta lopp</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="stopButton">
-      <property name="geometry">
-       <rect>
-        <x>6</x>
-        <y>114</y>
-        <width>80</width>
-        <height>24</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>15</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Avsluta lopp</string>
-      </property>
-     </widget>
      <widget class="QPushButton" name="finishButton">
       <property name="geometry">
        <rect>
@@ -369,24 +421,6 @@
       </property>
       <property name="text">
        <string>00:00.000</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="clearButton">
-      <property name="geometry">
-       <rect>
-        <x>6</x>
-        <y>144</y>
-        <width>80</width>
-        <height>24</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>15</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Nollställ</string>
       </property>
      </widget>
      <widget class="QLabel" name="amountOfFinishedRunners">
@@ -1040,6 +1074,24 @@
         </widget>
        </item>
        <item>
+        <widget class="QPushButton" name="stopRaceButton">
+         <property name="minimumSize">
+          <size>
+           <width>250</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>20</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Avsluta Lopp</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QPushButton" name="exportButton">
          <property name="minimumSize">
           <size>
@@ -1060,6 +1112,24 @@
       </layout>
      </item>
     </layout>
+   </widget>
+   <widget class="QLabel" name="amountOfFinishedRunners_2">
+    <property name="geometry">
+     <rect>
+      <x>1150</x>
+      <y>790</y>
+      <width>49</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>30</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Antal målgångar: </string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

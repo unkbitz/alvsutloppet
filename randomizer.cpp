@@ -77,6 +77,35 @@ QStringList MainWindow::buildList(QString targetGroup)
 
         QString runner = startNumber + " " + name;
 
+        bool alreadyWinner = false;
+
+        if(targetGroup == "Vuxna")
+        {
+            for (int j = 0; j < ui->adultsWinnersTable->rowCount(); j++)
+            {
+                if (runner == cellText(ui->adultsWinnersTable, j, 0))
+                {
+                    alreadyWinner = true;
+                    break;
+                }
+            }
+        }
+        else if(targetGroup == "Barn")
+        {
+            for (int j = 0; j < ui->childrenWinnersTable->rowCount(); j++)
+            {
+                if (runner == cellText(ui->childrenWinnersTable, j, 0))
+                {
+                    alreadyWinner = true;
+                    break;
+                }
+            }
+        }
+        if (alreadyWinner)
+        {
+            continue;
+        }
+
         if ((targetGroup == "Vuxna" && senior) ||
             (targetGroup == "Barn" && junior))
         {

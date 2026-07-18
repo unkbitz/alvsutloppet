@@ -42,6 +42,7 @@ private slots:
     void on_registerButton_clicked();
     void on_randomButton_clicked();
     void on_exportButton_clicked();
+    void on_stopRaceButton_clicked();
 
     // Register
     void on_addRunnerButton_clicked();
@@ -50,9 +51,12 @@ private slots:
     // Timing
     void on_startButton_clicked();
     void on_finishButton_clicked();
+    void on_undoButton_clicked();
+
+    // Stop
     void on_stopButton_clicked();
     void on_clearButton_clicked();
-    void on_undoButton_clicked();
+    void on_undoStopButton_clicked();
 
     // Export
     void on_exportButton_2_clicked();
@@ -83,6 +87,7 @@ private:
     int ageLimit = currentYear - 16;
 
     bool timerOn = false;
+    bool clearPressed = true;
     bool updatingExportTable = false;
 
     QVector<RemovedRow> undoStack;
@@ -124,6 +129,7 @@ private:
     void setUpExportLayout();
     void setUpRandomLayout();
     void setUpNewRecordLayout();
+    void setUpStopLayout();
 
     // Auto save
     void saveAutosave();
@@ -136,5 +142,8 @@ private:
     int timeToTenths(const QString& timeText);
     void insertHighScore(QTableWidget* table, const QString& name, const QString& time);
     void setTableText(QTableWidget* table, int row, int col, const QString& text);
+
+    // stop
+    void setCurrentTimeTextAtStop(const QString& text);
 };
 #endif // MAINWINDOW_H

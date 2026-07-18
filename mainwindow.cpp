@@ -54,6 +54,7 @@ MainWindow::MainWindow(QWidget *parent)
     setUpExportLayout();
     setUpRandomLayout();
     setUpNewRecordLayout();
+    setUpStopLayout();
 
     //Start page
     auto startLayout = new QVBoxLayout(ui->starting);
@@ -160,6 +161,8 @@ void MainWindow::connectInput()
             {
                 displayWindow->setCurrentTimeText(timeText);
             }
+
+            setCurrentTimeTextAtStop(timeText);
         }
     });
 
@@ -170,8 +173,6 @@ void MainWindow::connectInput()
         {
             if(timerOn)
                 on_finishButton_clicked();
-            else
-                on_startButton_clicked();
         }
 
         if(ui->stackedWidget->currentWidget() == ui->registerRunners)
@@ -271,6 +272,7 @@ void MainWindow::setUpTopLayout()
     topLayout->addWidget(ui->timeButton);
     topLayout->addWidget(ui->randomButton);
     topLayout->addWidget(ui->exportButton);
+    topLayout->addWidget(ui->stopRaceButton);
     topLayout->addStretch();
 
     mainLayout->addLayout(topLayout);
@@ -291,8 +293,8 @@ void MainWindow::setUpTimingLayout()
     leftLayoutTime->addWidget(ui->amountOfFinishedRunners);
     ui->amountOfFinishedRunners->setAlignment(Qt::AlignCenter);
     leftLayoutTime->addStretch();
-    leftLayoutTime->addWidget(ui->stopButton);
-    leftLayoutTime->addWidget(ui->clearButton);
+    //leftLayoutTime->addWidget(ui->stopButton);
+    //leftLayoutTime->addWidget(ui->clearButton);
 
     // empty space
     leftLayoutTime->addSpacing(30);
@@ -300,8 +302,8 @@ void MainWindow::setUpTimingLayout()
 
     ui->startButton->setMinimumWidth(300);
     ui->finishButton->setMinimumWidth(300);
-    ui->stopButton->setMinimumWidth(300);
-    ui->clearButton->setMinimumWidth(300);
+    //ui->stopButton->setMinimumWidth(300);
+    //ui->clearButton->setMinimumWidth(300);
     ui->undoButton->setMinimumWidth(300);
 
     auto bottomLayoutTime = new QVBoxLayout();
@@ -486,4 +488,40 @@ void MainWindow::setUpNewRecordLayout()
 
     mainNewRecordLayout->addStretch();
 }
+
+void MainWindow::setUpStopLayout()
+{
+    auto stopLayout = new QHBoxLayout(ui->stopPage);
+    stopLayout->setContentsMargins(8, 8, 8, 8);
+
+    auto leftLayoutStop = new QVBoxLayout();
+    leftLayoutStop->addWidget(ui->stopButton);
+    leftLayoutStop->addWidget(ui->undoStopButton);
+
+    leftLayoutStop->addStretch();
+    // empty space
+    leftLayoutStop->addWidget(ui->clearButton);
+    leftLayoutStop->addSpacing(30);
+
+
+    ui->stopButton->setMinimumWidth(300);
+    ui->clearButton->setMinimumWidth(300);
+
+    auto bottomLayoutTime = new QVBoxLayout();
+    auto logoTime = createLogo();
+    bottomLayoutTime->addWidget(logoTime);
+
+    leftLayoutStop->addLayout(bottomLayoutTime);
+
+    auto rightLayoutStop = new QVBoxLayout();
+    rightLayoutStop->addWidget(ui->currentTimeLabel_2);
+    rightLayoutStop->addWidget(ui->amountOfFinishedRunners_2);
+    ui->currentTimeLabel_2->setAlignment(Qt::AlignCenter);
+    ui->amountOfFinishedRunners_2->setAlignment(Qt::AlignCenter);
+    rightLayoutStop->addStretch();
+
+    stopLayout->addLayout(leftLayoutStop, 0);
+    stopLayout->addLayout(rightLayoutStop, 1);
+}
+
 
